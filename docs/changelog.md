@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.1.0] - Current
+## [2.1.1] - Current
+
+### Changed
+
+- Removed legacy default packages location, as the file was also moved to overlays for 1.10
+
+## [2.1.0]
 
 ### Added
 
