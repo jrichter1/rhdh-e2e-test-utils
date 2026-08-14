@@ -170,7 +170,7 @@ describe("disablePlugins", () => {
     });
     assert.deepStrictEqual(result.plugins![1], {
       package:
-        "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tech-radar:{{inherit}}",
+        "oci://quay.io/rhdh/backstage-community-plugin-tech-radar:{{inherit}}",
       disabled: true,
     });
     assert.deepStrictEqual(result.plugins![2], {
@@ -178,8 +178,7 @@ describe("disablePlugins", () => {
       disabled: true,
     });
     assert.deepStrictEqual(result.plugins![3], {
-      package:
-        "oci://registry.access.redhat.com/rhdh/backstage-plugin-kubernetes:{{inherit}}",
+      package: "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
       disabled: true,
     });
   });
@@ -189,7 +188,7 @@ describe("disablePlugins", () => {
     const result = disablePlugins([
       "./dynamic-plugins/dist/backstage-plugin-kubernetes-dynamic",
       "backstage-plugin-kubernetes",
-      "oci://registry.access.redhat.com/rhdh/backstage-plugin-kubernetes:{{inherit}}",
+      "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
     ]);
     assert.strictEqual(result.plugins!.length, 2);
     assert.deepStrictEqual(result.plugins![0], {
@@ -197,8 +196,7 @@ describe("disablePlugins", () => {
       disabled: true,
     });
     assert.deepStrictEqual(result.plugins![1], {
-      package:
-        "oci://registry.access.redhat.com/rhdh/backstage-plugin-kubernetes:{{inherit}}",
+      package: "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
       disabled: true,
     });
   });

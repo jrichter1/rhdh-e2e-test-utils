@@ -1,5 +1,5 @@
 includes:
   - dynamic-plugins.default.yaml
 plugins:
-  - package: oci://registry.access.redhat.com/rhdh/red-hat-developer-hub-backstage-plugin-quickstart:{{inherit}}
+  - package: oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-quickstart:{{inherit}}
     disabled: true

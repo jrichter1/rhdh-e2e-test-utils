@@ -89,7 +89,7 @@ const DEFAULT_PACKAGES_BASE_URL =
 const LEGACY_DEFAULT_PACKAGES_BASE_URL =
   "https://raw.githubusercontent.com/redhat-developer/rhdh/refs/heads";
 
-const DEFAULT_DPDY_OCI_REGISTRY = "registry.access.redhat.com/rhdh";
+const DEFAULT_DPDY_OCI_REGISTRY = "quay.io/rhdh";
 
 interface DefaultPackagesYaml {
   packages?: {
@@ -163,7 +163,7 @@ export async function fetchDefaultPackages(): Promise<Set<string>> {
  * Resolution priority:
  * 1. NIGHTLY_DPDY_OCI_REGISTRY_MAP — JSON object mapping registry → array of package names
  * 2. NIGHTLY_DPDY_OCI_REGISTRY — blanket override for all plugins using {{inherit}}
- * 3. Default: registry.access.redhat.com/rhdh
+ * 3. Default: quay.io/rhdh
  */
 export function getDpdyRegistry(packageName: string): string {
   const map = process.env.NIGHTLY_DPDY_OCI_REGISTRY_MAP;
@@ -614,7 +614,7 @@ export function normalizeDisablePluginName(plugin: string): string {
  * mountPoints / config conflicts with the workspace's PR OCI image.
  *
  * Registry resolution: NIGHTLY_DPDY_OCI_REGISTRY, else
- * registry.access.redhat.com/rhdh.
+ * quay.io/rhdh.
  *
  * @param plugins plugin names, wrapper paths, and/or OCI refs to disable
  * @returns Dynamic plugins configuration that disables listed plugins

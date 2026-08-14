@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.1.8] - Current
+## [2.1.9] - Current
+
+### Changed
+
+- Default DPDY oci registry changed from `registry.access.redhat.com/rhdh` to `quay.io` to reflect latest DPDY. This change affects the metadata resolution, and the default plugin configuration files.
+
+## [2.1.8]
 
 ### Fixed
 

@@ -350,7 +350,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
 
       assert.strictEqual(
         result.plugins![0].package,
-        "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton:{{inherit}}",
+        "oci://quay.io/rhdh/backstage-community-plugin-tekton:{{inherit}}",
         "DPDY OCI plugin must resolve to {{inherit}} with default RHEC registry",
       );
     } finally {
@@ -387,7 +387,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
 
       assert.strictEqual(
         result.plugins![0].package,
-        "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-topology:{{inherit}}",
+        "oci://quay.io/rhdh/backstage-community-plugin-topology:{{inherit}}",
         "{{inherit}} ref must use default RHEC registry with no alias suffix",
       );
       assert.ok(
@@ -428,7 +428,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
 
       assert.strictEqual(
         result.plugins![0].package,
-        "oci://registry.access.redhat.com/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator:{{inherit}}",
+        "oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator:{{inherit}}",
         "{{inherit}} must use default RHEC registry regardless of metadata's ghcr.io",
       );
     } finally {
@@ -445,7 +445,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         name: "backstage-community-plugin-tekton",
         packageName: "@backstage-community/plugin-tekton",
         dynamicArtifact:
-          "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+          "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
       },
     ]);
 
@@ -454,7 +454,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         plugins: [
           {
             package:
-              "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+              "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
             disabled: false,
           },
         ],
@@ -488,7 +488,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         name: "backstage-community-plugin-tekton",
         packageName: "@backstage-community/plugin-tekton",
         dynamicArtifact:
-          "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+          "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
       },
       {
         name: "red-hat-developer-hub-backstage-plugin-orchestrator",
@@ -503,7 +503,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         plugins: [
           {
             package:
-              "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+              "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
             disabled: false,
           },
           {
@@ -531,7 +531,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
       );
       assert.strictEqual(
         result.plugins![1].package,
-        "oci://registry.access.redhat.com/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator:{{inherit}}",
+        "oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator:{{inherit}}",
         "orchestrator must use default RHEC (not in map)",
       );
     } finally {
@@ -552,13 +552,13 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         name: "backstage-community-plugin-tekton",
         packageName: "@backstage-community/plugin-tekton",
         dynamicArtifact:
-          "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+          "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
       },
       {
         name: "red-hat-developer-hub-backstage-plugin-orchestrator",
         packageName: "@red-hat-developer-hub/backstage-plugin-orchestrator",
         dynamicArtifact:
-          "oci://registry.access.redhat.com/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator@sha256:def",
+          "oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator@sha256:def",
       },
     ]);
 
@@ -567,12 +567,12 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
         plugins: [
           {
             package:
-              "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton@sha256:abc",
+              "oci://quay.io/rhdh/backstage-community-plugin-tekton@sha256:abc",
             disabled: false,
           },
           {
             package:
-              "oci://registry.access.redhat.com/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator@sha256:def",
+              "oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-orchestrator@sha256:def",
             disabled: false,
           },
         ],
@@ -818,7 +818,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
       // Tekton: DPDY → {{inherit}} with default RHEC, no config injection
       assert.strictEqual(
         result.plugins![0].package,
-        "oci://registry.access.redhat.com/rhdh/backstage-community-plugin-tekton:{{inherit}}",
+        "oci://quay.io/rhdh/backstage-community-plugin-tekton:{{inherit}}",
         "DPDY plugin must use {{inherit}} with default RHEC registry",
       );
       assert.strictEqual(
@@ -856,7 +856,7 @@ describe("getDpdyRegistry", () => {
 
     assert.strictEqual(
       getDpdyRegistry("@backstage-community/plugin-tekton"),
-      "registry.access.redhat.com/rhdh",
+      "quay.io/rhdh",
     );
   });
 
@@ -904,7 +904,7 @@ describe("getDpdyRegistry", () => {
 
     assert.strictEqual(
       getDpdyRegistry("@red-hat-developer-hub/backstage-plugin-orchestrator"),
-      "registry.access.redhat.com/rhdh",
+      "quay.io/rhdh",
       "unlisted plugin must fall back to default RHEC",
     );
   });
@@ -933,7 +933,9 @@ describe("getDpdyRegistry", () => {
       "ghcr.io/redhat-developer/rhdh-plugin-export-overlays": [
         "@backstage-community/plugin-tekton",
       ],
-      "quay.io/rhdh": ["@red-hat-developer-hub/backstage-plugin-orchestrator"],
+      "registry.access.redhat.com": [
+        "@red-hat-developer-hub/backstage-plugin-orchestrator",
+      ],
     });
 
     assert.strictEqual(
@@ -942,11 +944,11 @@ describe("getDpdyRegistry", () => {
     );
     assert.strictEqual(
       getDpdyRegistry("@red-hat-developer-hub/backstage-plugin-orchestrator"),
-      "quay.io/rhdh",
+      "registry.access.redhat.com",
     );
     assert.strictEqual(
       getDpdyRegistry("@backstage-community/plugin-argocd"),
-      "registry.access.redhat.com/rhdh",
+      "quay.io/rhdh",
       "unlisted plugin falls back to default",
     );
   });
