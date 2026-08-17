@@ -351,7 +351,7 @@ describe("processPluginsForDeployment — nightly {{inherit}}", () => {
       assert.strictEqual(
         result.plugins![0].package,
         "oci://quay.io/rhdh/backstage-community-plugin-tekton:{{inherit}}",
-        "DPDY OCI plugin must resolve to {{inherit}} with default RHEC registry",
+        "DPDY OCI plugin must resolve to {{inherit}} with default quay.io registry",
       );
     } finally {
       await fs.remove(metadataDir);
