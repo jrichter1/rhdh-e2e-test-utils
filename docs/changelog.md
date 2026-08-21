@@ -2,7 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.1.9] - Current
+## [2.1.10] - Current
+
+### Fixed
+
+- Errors logging in when using guest or keycloak auth providers
+
+### Changed
+
+- Removed app-auth and app-auth-integrations from NFS config, since newer versions are present in DPDY
+- Added `auth-backend-module-guest-provider` config to guest auth
+- Added `auth-backend-module-oidc-provider` config to keycloak auth
+- Added `auth-backend-module-github-provider` config to github auth
+- Added `signIn` to app-config for github auth
+
+## [2.1.9]
 
 ### Changed
 
