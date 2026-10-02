@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.1.20] - Current
+## [2.2.0] - Current
+
+### Fixed
+
+- **LoginHelper#logintoGithub**: remove wait for outdated locator, now simply waits for redirect to github homepage
+
+## [2.1.20]
 
 ### Fixed
 
