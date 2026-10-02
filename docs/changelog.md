@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.2.0] - Current
+## [2.2.1] - Current
+
+### Changed
+
+- This is just a version bump since 2.2.0 had previously been uploaded to npm
+
+## [2.2.0]
 
 ### Fixed
 
