@@ -153,7 +153,7 @@ describe("normalizeDisablePluginName", () => {
 });
 
 describe("disablePlugins", () => {
-  it("disables an existing OCI entry by normalized plugin name", () => {
+  it("disables inherited plugin while leaving the desired version enabled", () => {
     const result = applyDisabledPlugins(
       {
         plugins: [
@@ -171,8 +171,12 @@ describe("disablePlugins", () => {
       {
         package:
           "oci://ghcr.io/redhat-developer/rhdh-plugin-export-overlays/red-hat-developer-hub-backstage-plugin-app-auth:bs_1.54.6__1.1.0",
-        disabled: true,
+        disabled: false,
       },
+      {
+        disabled: true,
+        package: 'oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-app-auth:{{inherit}}'
+      }
     ]);
   });
 
@@ -181,27 +185,19 @@ describe("disablePlugins", () => {
     assert.deepStrictEqual(result, { plugins: [] });
   });
 
-  it("creates disabled local wrapper and OCI {{inherit}} entries per plugin", () => {
+  it("creates disabled OCI {{inherit}} entries per plugin", () => {
     delete process.env.NIGHTLY_DPDY_OCI_REGISTRY;
     const result = disablePlugins([
       "backstage-community-plugin-tech-radar",
       "backstage-plugin-kubernetes",
     ]);
-    assert.strictEqual(result.plugins!.length, 4);
+    assert.strictEqual(result.plugins!.length, 2);
     assert.deepStrictEqual(result.plugins![0], {
-      package: "./dynamic-plugins/dist/backstage-community-plugin-tech-radar",
-      disabled: true,
-    });
-    assert.deepStrictEqual(result.plugins![1], {
       package:
         "oci://quay.io/rhdh/backstage-community-plugin-tech-radar:{{inherit}}",
       disabled: true,
     });
-    assert.deepStrictEqual(result.plugins![2], {
-      package: "./dynamic-plugins/dist/backstage-plugin-kubernetes",
-      disabled: true,
-    });
-    assert.deepStrictEqual(result.plugins![3], {
+    assert.deepStrictEqual(result.plugins![1], {
       package: "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
       disabled: true,
     });
@@ -214,12 +210,8 @@ describe("disablePlugins", () => {
       "backstage-plugin-kubernetes",
       "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
     ]);
-    assert.strictEqual(result.plugins!.length, 2);
+    assert.strictEqual(result.plugins!.length, 1);
     assert.deepStrictEqual(result.plugins![0], {
-      package: "./dynamic-plugins/dist/backstage-plugin-kubernetes",
-      disabled: true,
-    });
-    assert.deepStrictEqual(result.plugins![1], {
       package: "oci://quay.io/rhdh/backstage-plugin-kubernetes:{{inherit}}",
       disabled: true,
     });
@@ -231,13 +223,8 @@ describe("disablePlugins", () => {
       const result = disablePlugins([
         "red-hat-developer-hub-backstage-plugin-global-header",
       ]);
-      assert.strictEqual(result.plugins!.length, 2);
+      assert.strictEqual(result.plugins!.length, 1);
       assert.deepStrictEqual(result.plugins![0], {
-        package:
-          "./dynamic-plugins/dist/red-hat-developer-hub-backstage-plugin-global-header",
-        disabled: true,
-      });
-      assert.deepStrictEqual(result.plugins![1], {
         package:
           "oci://quay.io/rhdh/red-hat-developer-hub-backstage-plugin-global-header:{{inherit}}",
         disabled: true,

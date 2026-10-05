@@ -633,10 +633,6 @@ export function disablePlugins(plugins: string[]): DynamicPluginsConfig {
     seen.add(name);
 
     pluginConfig.plugins!.push({
-      package: `./dynamic-plugins/dist/${name}`,
-      disabled: true,
-    });
-    pluginConfig.plugins!.push({
       package: `oci://${registry}/${name}:{{inherit}}`,
       disabled: true,
     });
@@ -653,25 +649,13 @@ export function applyDisabledPlugins(
   disabledConfig: DynamicPluginsConfig,
 ): DynamicPluginsConfig {
   const disabledPlugins = disabledConfig.plugins ?? [];
-  const disabledNames = new Set(
-    disabledPlugins.map((plugin) => getNormalizedPluginMergeKey(plugin)),
-  );
-  const plugins = (config.plugins ?? []).map((plugin) =>
-    disabledNames.has(getNormalizedPluginMergeKey(plugin))
-      ? { ...plugin, disabled: true }
-      : plugin,
-  );
-  const presentNames = new Set(
-    plugins.map((plugin) => getNormalizedPluginMergeKey(plugin)),
-  );
+  const plugins = config.plugins ?? [];
 
   return {
     ...config,
     plugins: [
       ...plugins,
-      ...disabledPlugins.filter(
-        (plugin) => !presentNames.has(getNormalizedPluginMergeKey(plugin)),
-      ),
+      ...disabledPlugins
     ],
   };
 }
