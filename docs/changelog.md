@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.2.1] - Current
+## [2.2.2] - Current
+
+### Fixed
+
+- **UIhelper#verifyAlertErrorMessage**: match sign-in error toasts that are not exposed as `role="alert"` (alertdialog / alert / text fallback, 30s timeout).
+
+## [2.2.1]
 
 ### Changed
 
