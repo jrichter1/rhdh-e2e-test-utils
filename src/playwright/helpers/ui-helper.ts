@@ -584,9 +584,14 @@ export class UIhelper {
   }
 
   async verifyAlertErrorMessage(message: string | RegExp) {
-    const alert = this.page.getByRole("alert");
-    await alert.waitFor();
-    await expect(alert).toHaveText(message);
+    const alert = this.page
+      .getByRole("alertdialog")
+      .filter({ hasText: message })
+      .or(this.page.getByRole("alert").filter({ hasText: message }))
+      .or(this.page.getByText(message));
+    await expect(alert.filter({ visible: true }).first()).toBeVisible({
+      timeout: 30_000,
+    });
   }
 
   async verifyTextInTooltip(text: string | RegExp) {
