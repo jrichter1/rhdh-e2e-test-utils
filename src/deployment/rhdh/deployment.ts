@@ -445,25 +445,15 @@ export class RHDHDeployment {
 
     // Semantic versions (e.g., 1.2, 1.10)
     if (/^(\d+(\.\d+)?)$/.test(resolvedVersion)) {
-      const response = await fetch(
-        "https://quay.io/api/v1/repository/rhdh/chart/tag/?onlyActiveTags=true&limit=600",
-      );
-
-      if (!response.ok)
-        throw new Error(
-          `Failed to fetch chart versions: ${response.statusText}`,
-        );
-
-      const data = (await response.json()) as { tags: Array<{ name: string }> };
-      const matching = data.tags
+      const matchingTags = (await this._getQuayTags("rhdh", "chart"))
         .map((t) => t.name)
         .filter((name) => name.startsWith(`${resolvedVersion}-`))
         .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
-      const latest = matching.at(-1);
-      if (!latest)
-        throw new Error(`No chart version found for ${resolvedVersion}`);
-      return latest;
+      const latest = matchingTags.at(-1);
+      if (latest) return latest;
+
+      throw new Error(`No chart version found for ${resolvedVersion}`);
     }
 
     // CI build versions (e.g., 1.2.3-CI)
@@ -478,30 +468,19 @@ export class RHDHDeployment {
    */
   private async _resolveVersionFromNextTag(): Promise<string> {
     // Fetch all active tags in a single API call
-    const response = await fetch(
-      "https://quay.io/api/v1/repository/rhdh/rhdh-hub-rhel9/tag/?onlyActiveTags=true&limit=75",
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch image tags: ${response.statusText}`);
-    }
-
-    // Use Record to avoid snake_case linting issues with Quay API response
-    const data = (await response.json()) as {
-      tags: Array<Record<string, unknown>>;
-    };
+    const tags = await this._getQuayTags("rhdh", "rhdh-hub-rhel10");
 
     // Find the "next" tag and get its digest
-    const nextTag = data.tags.find((t) => t["name"] === "next");
+    const nextTag = tags.find((t) => t["name"] === "next");
     if (!nextTag) {
-      throw new Error('No "next" tag found in rhdh-hub-rhel9 repository');
+      throw new Error('No "next" tag found in rhdh-hub-rhel10 repository');
     }
 
     const digest = nextTag["manifest_digest"] as string;
     this._log(`"next" tag digest: ${digest}`);
 
     // Find semantic version tag (e.g., "1.10") with the same digest
-    const semanticVersionTag = data.tags.find(
+    const semanticVersionTag = tags.find(
       (t) =>
         t["manifest_digest"] === digest &&
         /^\d+\.\d+$/.test(t["name"] as string),
@@ -514,6 +493,31 @@ export class RHDHDeployment {
     }
 
     return semanticVersionTag["name"] as string;
+  }
+
+  private async _getQuayTags(org: string, repo: string) {
+    const tags = [];
+    for (let page = 1; ; page++) {
+      const response = await fetch(
+        `https://quay.io/api/v1/repository/${org}/${repo}/tag/?onlyActiveTags=true&limit=600&page=${page}`,
+      );
+
+      if (!response.ok)
+        throw new Error(
+          `Failed to fetch tags for ${org}/${repo}: ${response.statusText}`,
+        );
+
+      /* eslint-disable @typescript-eslint/naming-convention */
+      const data = (await response.json()) as {
+        tags: Array<{ name: string; manifest_digest: string }>;
+        has_additional: boolean;
+      };
+      /* eslint-enable @typescript-eslint/naming-convention */
+      tags.push(...data.tags);
+
+      if (!data.has_additional) break;
+    }
+    return tags;
   }
 
   private _buildDeploymentConfig(input: DeploymentOptions): DeploymentConfig {
